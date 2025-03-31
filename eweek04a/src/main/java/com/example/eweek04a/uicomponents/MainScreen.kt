@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,22 +41,23 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
     Column(
         modifier = modifier
-            .fillMaxSize() // Fill available space
+            .fillMaxSize()
             .padding(16.dp)
     ) {
         // Title for the Todo List
         TodoListTitle()
-        Spacer(modifier = Modifier.height(8.dp)) // Spacer between title and list
+        Spacer(modifier = Modifier.height(8.dp))
 
-
-       // Row to display Text and Switch tightly together aligned to the left
+        // Row to display Text and Switch tightly together aligned to the left
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Absolute.Left
+            horizontalArrangement = Arrangement.End
         ) {
-            Text("미원료 항목만 보기",
-                modifier = Modifier.weight(1f))
+            Text(
+                "미완료 항목만 보기 ",
+                modifier = Modifier.padding(end = 8.dp)
+            )
             TodoSwitch(
                 checked = showOnlyPending,
                 onCheckedChange = { showOnlyPending = it }
@@ -64,11 +66,11 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Todo List with filtered list
-        TodoList(filteredTodoList.toMutableList()) // Pass filteredTodoList here
+        // Todo List with filtered list, filling remaining space.
+        TodoList(filteredTodoList.toMutableStateList(), modifier = Modifier.weight(1f))
 
-        // Spacer to push TodoItemInput to the bottom
-        Spacer(modifier = Modifier.weight(1f))
+        // No Spacer with weight. Just spacer with small height
+        Spacer(modifier = Modifier.height(8.dp))
 
         // TodoItemInput always at the bottom
         TodoItemInput(todoList)
