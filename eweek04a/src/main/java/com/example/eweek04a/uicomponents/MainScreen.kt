@@ -15,29 +15,19 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.eweek04a.model.Item
 import com.example.eweek04a.model.TodoItemFactory
-import com.example.eweek04a.model.TodoStatus
+import java.util.Collections.addAll
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
     // List of items for the ToDo list
-    val todoList = remember { mutableStateListOf<Item>().apply { addAll(TodoItemFactory.makeTodoList()) } }
-
-    // State to handle the switch toggle
+    val todoList = remember { mutableStateListOf<Item>().apply {addAll(TodoItemFactory.makeTodoList())}}
     var showOnlyPending by remember { mutableStateOf(false) }
-
-    // Filter the todoList based on the switch
-    val filteredTodoList = if (showOnlyPending) {
-        todoList.filter { it.status == TodoStatus.PENDING }
-    } else {
-        todoList
-    }
 
     Column(
         modifier = modifier
@@ -67,7 +57,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(8.dp))
 
         // Todo List with filtered list, filling remaining space.
-        TodoList(filteredTodoList.toMutableStateList(), modifier = Modifier.weight(1f))
+        TodoList(todoList, showOnlyPending ,modifier = Modifier.weight(1f))
+
 
         // No Spacer with weight. Just spacer with small height
         Spacer(modifier = Modifier.height(8.dp))
